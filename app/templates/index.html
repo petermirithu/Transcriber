@@ -94,17 +94,26 @@
 		<!--/ banner end -->						  
 	</div>
 
-	<div id="form" class="container-fluid">			
-		<div class="form_u">
-			<form method="post" action="{% url 'file_upload' %}" enctype="multipart/form-data">
-				{% csrf_token %}
-				<input style="cursor: pointer;" class="form-control" type="file" name="myfile" required>
-				<hr>
-				<button class="btn btn-primary" type="submit">Upload</button>
-			</form>
-		</div>		
-		{% if uploaded_file_url %}					
-			<a href="/convert{{uploaded_file_url}}/">Transcribe</a>
+	<div id="form" class="container-fluid">		
+		{% if uploaded_file_url %}							
+			<div class="trans_btn">
+				<div class="share-button">
+					<span>Transcribe</span>					
+					<p><i class="fas fa-assistive-listening-systems"></i></p>
+					<a onclick="openLoader()" href="/convert{{uploaded_file_url}}/" >Generate Text</a>
+					<p<i class="fas fa-pen"></i></p>
+				</div>		
+			</div>
+		{% else %}		
+			<div class="form_u">
+				<form method="post" action="{% url 'file_upload' %}" enctype="multipart/form-data">
+					{% csrf_token %}
+					<input style="cursor: pointer;" class="form-control" type="file" name="myfile" required>
+					<hr>
+					<button class="btn btn-primary" type="submit">Upload</button>
+				</form>
+			</div>				
+
 		{% endif %}
 
 		{% if text %}								
@@ -112,7 +121,7 @@
 				<div class="blockquote">			
 					<h2 style="font-family: 'Suez One', serif;">Decoded Text</h1>			
 					<hr>
-					<p>{{text}}</p>					
+					<p style="font-family: 'Montserrat', sans-serif;">{{text}}</p>					
 				</div>
 			</div>				
 		{% endif %}

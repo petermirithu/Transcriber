@@ -20,7 +20,7 @@ def file_upload(request):
         uploaded_file_url = fs.url(filename)     
         final_name=uploaded_file_url[6:]
 
-        messages.info(request, 'Successfully Uploaded you file. Scroll down and hit Transcribe button for magic.')        
+        messages.info(request, 'Successfully Uploaded you file. Scroll down and hover Transcribe button for magic.')        
         return render(request, 'index.html', {'uploaded_file_url': final_name})
 
     return redirect("home")

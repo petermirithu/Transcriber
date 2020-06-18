@@ -16,6 +16,7 @@
         {% bootstrap_css %}            
         <link rel="shortcut icon" href="{% static 'logo.png' %}">                        
         <link href="https://fonts.googleapis.com/css2?family=Comfortaa&family=Piedra&family=Suez+One&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
         <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">			
         <link href="{% static 'css/animate.min.css' %}" rel="stylesheet">		
 		<link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">				
@@ -43,6 +44,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
     <script src="{% static 'js/script.js' %}"></script>          
     <script>
+        function openLoader() {            
+            $("#loader").show();
+        }
+
         $(window).load(function() {        
           $("#loader").hide();
         });
