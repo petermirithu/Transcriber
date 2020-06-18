@@ -23,11 +23,11 @@ def file_upload(request):
 
 def converter(request):
 
-    file_x="static/audio/newsreel.mp3" 
-    sound_x = AudioSegment.from_mp3(file_x)
-    sound_x.export("static/audio/newsreel.wav", format="wav")
+    # file_x="media/newsreel.mp3" 
+    # sound_x = AudioSegment.from_mp3(file_x)
+    # sound_x.export("media/newsreel.wav", format="wav")
 
-    sound="static/audio/newsreel.wav"
+    sound="media/newsreel.wav"
                 
     # file_x="static/audio/Just To Know.wav"
     # sound_x = AudioSegment.from_wav(file_x)
@@ -49,11 +49,13 @@ def converter(request):
 
         # print("Transcription: " + r.recognize_google(audio))
 
+        text=ls.recognize_google(audio)
+
         try:
             print("Converted Audio is :")
             print(ls.recognize_google(audio))
         except Exception as e:
             print("Error {} : ".format(e))        
 
-    return redirect('home')
+    return render( request, 'index.html',{"text":text})
 
