@@ -3,10 +3,10 @@ from django.http import HttpResponseRedirect
 from .forms import UploadFileForm
 import speech_recognition as sr
 from pydub import AudioSegment
+from django.contrib import messages
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 
-from django.templatetags.static import static
 
 # Create your views here.
 def home(request):
@@ -17,45 +17,70 @@ def file_upload(request):
         myfile = request.FILES['myfile']
         fs = FileSystemStorage()
         filename = fs.save(myfile.name, myfile)
-        uploaded_file_url = fs.url(filename)
-        return render(request, 'index.html', {'uploaded_file_url': uploaded_file_url})
+        uploaded_file_url = fs.url(filename)     
+        final_name=uploaded_file_url[6:]
+
+        messages.info(request, 'Successfully Uploaded you file. Scroll down and hit Transcribe button for magic.')        
+        return render(request, 'index.html', {'uploaded_file_url': final_name})
+
     return redirect("home")
 
-def converter(request):
+def converter(request,file_name):
+    file_path="media/"+file_name
+    # check file        
+    str_url = str(file_path)
+    exte_str=str_url[-3]+str_url[-2]+str_url[-1]
 
-    # file_x="media/newsreel.mp3" 
-    # sound_x = AudioSegment.from_mp3(file_x)
-    # sound_x.export("media/newsreel.wav", format="wav")
+    if "%" in str_url:
+        messages.info(request, "Please rename your file. I don't accept file with spaces in between!")
+        return redirect("home")
+    elif exte_str=="mp3":
+        file_x_mp3=str_url
+        sound_x_mp3 = AudioSegment.from_mp3(file_x_mp3)
+        cut_name1=str_url[0:(len(str_url)-4)]
+        sound_x_mp3.export(cut_name1+".wav", format="wav")
 
-    sound="media/newsreel.wav"
+        sound_mp3=cut_name1+".wav"
+
+        # listening to audio
+        ls_mp3=sr.Recognizer()
+
+        with sr.AudioFile(sound_mp3) as source:
+            ls_mp3.adjust_for_ambient_noise(source)                      
+            audio_mp3 = ls_mp3.record(source)          
+            try:
+                text_mp3=ls_mp3.recognize_google(audio_mp3)                    
+
+            except Exception:
+                messages.info(request, 'Bad News! There was error with you file.')
+                return redirect("home")                
+        
+        messages.info(request, 'Successfully did magic for you. Scroll down to see it!')        
+        return render( request, 'index.html',{"text":text_mp3})
+
+    elif exte_str=="wav":
+        file_wav=str_url
+        sound_x_wav = AudioSegment.from_wav(file_wav)
+        sound_x_wav = sound_x_wav.set_channels(1)
+        sound_x_wav.export(file_wav, format="wav")            
+        sound_wav=str_url
+        
+        # listening to audio
+        ls_wav=sr.Recognizer()
+
+        with sr.AudioFile(sound_wav) as source_wav:
+            ls_wav.adjust_for_ambient_noise(source_wav)
                 
-    # file_x="static/audio/Just To Know.wav"
-    # sound_x = AudioSegment.from_wav(file_x)
-    # sound_x = sound_x.set_channels(1)
-    # sound_x.export("static/audio/Just To Know.wav", format="wav")
-    # sound="static/audio/Just To Know.wav"
+            audio_wav = ls_wav.record(source_wav)          
+            try:                    
+                text_wav=ls_wav.recognize_google(audio_wav)                    
+            except Exception:
+                messages.info(request, 'Bad News! There was error with you file.')
+                return redirect("home")                
 
-    # listening to audio
-    ls=sr.Recognizer()
-
-    with sr.AudioFile(sound) as source:
-        ls.adjust_for_ambient_noise(source)
-
-        print("Converting to text...")
-
-        # audio=ls.listen(source)
-
-        audio = ls.record(source)  # read the entire audio file                  
-
-        # print("Transcription: " + r.recognize_google(audio))
-
-        text=ls.recognize_google(audio)
-
-        try:
-            print("Converted Audio is :")
-            print(ls.recognize_google(audio))
-        except Exception as e:
-            print("Error {} : ".format(e))        
-
-    return render( request, 'index.html',{"text":text})
-
+        messages.info(request, 'Successfully did magic for you. Scroll down to see it!')                                    
+        return render( request, 'index.html',{"text":text_wav})
+        
+    else:            
+        messages.info(request, 'Bad News! We only accept audio files!.')
+        return redirect("home")         

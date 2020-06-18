@@ -1,0 +1,25 @@
+Metadata-Version: 2.0
+Name: Fleepy
+Version: 0.2.1
+Summary: Pythonic Fleep API Client
+Home-page: https://github.com/nicholasamorim/fleepy
+Author: Nicholas Amorim
+Author-email: nicholas@alienretro.com
+License: GPL
+Keywords: api consumer client fleep chat http rest
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Requires-Dist: attrdict
+Requires-Dist: requests
+
+UNKNOWN
+
+

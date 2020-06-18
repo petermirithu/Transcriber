@@ -6,8 +6,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     url("^$",views.home,name="home"),
-    url("^convert$",views.converter,name="convert"),
     url("^file_upload$",views.file_upload,name="file_upload"),
+    path('convert/<str:file_name>/',views.converter,name="converter"),        
 ]
 
 if settings.DEBUG:

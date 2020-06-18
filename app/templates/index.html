@@ -3,7 +3,7 @@
 {% load bootstrap4 %}
  
 
-{% block content %}			
+{% block content %}			  
 	<!-- wrapper -->
 	<div class="wrapper" id="home">
 	
@@ -15,16 +15,23 @@
 					<div class="logo">						
 						<img src="{% static 'logo.png' %}" alt="logo" style="border-radius: 50%; width:50px;float:left">
 						<!-- secondary menu left link area -->
-						<div class="sm-left">
-							<h6 class="text-center">Transciber_X</h2>							
+						<div class="sm-left">							
+							<a href="{% url 'home' %}" style="font-family: 'Piedra', cursive;" class="text-center">
+								<h6 class="ml9">
+									<span class="text-wrapper">
+									  <span class="letters">Transcriber_X</span>
+									</span>
+								</h6>                    								
+							</a>							
 						</div>
 						<!-- secondary menu right link area -->
 						<div class="sm-right">
 							<!-- social link -->
-							<div class="sm-social-link">														
-								<a class="github" href="#"><i class="fab fa-github"></i>
-								<a class="mail" href="#"><i class="fas fa-envelope"></i>
-								<a class="h-linkedin" href="#"><i class="fa fa-linkedin"></i></a>
+							<div class="sm-social-link">																			
+								<a class="github" href="https://github.com/petermirithu"><i class="fab fa-github"></i></a>
+								<a class="mail" href="mailto: peter_mirithu@yahoo.com"><i class="fas fa-envelope"></i></a>
+								<a class="h-linkedin" href="https://www.linkedin.com/in/peter-mirithu"><i class="fa fa-linkedin"></i></a>
+								<a class="portfolio" href="https://petermirithu.github.io/Portfolio/"><i class="fas fa-address-card"></i></a>			
 							</div>
 						</div>						
 					</div>
@@ -38,6 +45,9 @@
 		<!-- banner area -->
 		<div class="banner">											  							  
 			<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+				{% for message in messages %}						
+					<p class="alert alert-success">{{message}}</p>					
+				{% endfor %}	
 				<!-- Wrapper for slides -->
 				<div class="carousel-inner" role="listbox">
 					<div class="carousel-item active">									
@@ -46,11 +56,11 @@
 							<!-- banner caption -->
 							<div class="carousel-caption slide-one">
 								<!-- heading -->
-								<h2 class="animated fadeInLeftBig"><i class="fa fa-music"></i> Work Done for Your!</h2>
+								<h2 class="animated fadeInLeftBig"><i class="fas fa-assistive-listening-systems"></i> Work Done for Your!</h2>
 								<!-- paragraph -->
 								<h3 class="animated fadeInRightBig">Just upload your audio file & get text out of it.</h3>
 								<!-- button -->
-								<a href="#" class="animated fadeIn btn btn-danger">Upload file</a>
+								<a href="#form" class="animated fadeIn btn btn-danger">Upload file</a>
 							</div>
 						</div>
 					</div>
@@ -60,11 +70,11 @@
 							<!-- banner caption -->
 							<div class="carousel-caption slide-two">
 								<!-- heading -->
-								<h2 class="animated fadeInLeftBig"><i class="fa fa-headphones"></i> Transcibe Master...</h2>
+								<h2 class="animated fadeInLeftBig"><i class="fas fa-pen"></i> Transcribe Master...</h2>
 								<!-- paragraph -->
 								<h3 class="animated fadeInRightBig">All you need is an audio file, Simple!.</h3>
 								<!-- button -->
-								<a href="#" class="animated fadeIn btn btn-danger">Upload Now</a>
+								<a href="#form" class="animated fadeIn btn btn-danger">Upload Now</a>
 							</div>
 						</div>
 					</div>
@@ -84,25 +94,34 @@
 		<!--/ banner end -->						  
 	</div>
 
-	<div id="form" class="container-fluid">	
+	<div id="form" class="container-fluid">			
 		<div class="form_u">
 			<form method="post" action="{% url 'file_upload' %}" enctype="multipart/form-data">
 				{% csrf_token %}
-				<input class="form-control" type="file" name="myfile" required>
+				<input style="cursor: pointer;" class="form-control" type="file" name="myfile" required>
 				<hr>
 				<button class="btn btn-primary" type="submit">Upload</button>
 			</form>
 		</div>		
+		{% if uploaded_file_url %}					
+			<a href="/convert{{uploaded_file_url}}/">Transcribe</a>
+		{% endif %}
+
 		{% if text %}								
 			<div class="blockquote-wrapper">
 				<div class="blockquote">			
-					<h2>Decoded Text</h1>			
+					<h2 style="font-family: 'Suez One', serif;">Decoded Text</h1>			
 					<hr>
-					<h4>kjdsfjsfbyfbyewew w efv feehjfefefdeewufew erfieo fhewf ew f feufeyfewdhjebfjsfewie    u hf jfwfhewe ifefefaisdmsaodkwoidwjnde frfkkwasdadwdiudeucfesyufesc eudsdwwdwoidwjoidedcbbkscdssfc swcsjcosjcnewsacucbewiycsbhdsckjsc csdjcsjck</h4>
-					<h6>&mdash;Pyra<br><em>Software Developer: Backend Specialist</em></h6>
+					<p>{{text}}</p>					
 				</div>
 			</div>				
 		{% endif %}
 	</div>					
+
+	<div class="footer">
+		<h6>&mdash; <span><a href="https://github.com/petermirithu">Pyra</a></span> <br><em>Software Developer &nbsp;&nbsp;|&nbsp;&nbsp;</em>
+			Copyright &copy;&nbsp;&nbsp;<script>document.write(new Date().getFullYear());</script> All rights reserved
+		</h6>		
+	</div>
 
 	{% endblock %}
