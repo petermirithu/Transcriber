@@ -1,0 +1,181 @@
+/*
+ * Basic CSS starts 
+ */
+ 
+html{
+	scroll-behavior: smooth;
+} 
+body{
+	color: #252c37;
+	font-family: 'Lato', sans-serif;
+	font-weight: 400;
+	-webkit-font-smoothing: antialiased;
+}
+
+/* secondary menu */
+
+.secondary-menu {
+	position: fixed;
+	z-index: 99999;
+	width: 100%;
+	background: rgba(0,0,0,0.9);
+}
+.secondary-menu .sm-left {
+	float: left;
+	text-align: left;
+}
+
+.logo{
+	justify-content: center;
+}
+.secondary-menu .sm-left a {
+	color: #ccc;
+}
+
+.secondary-menu .sm-right {
+	float: right;
+	text-align: right;
+}
+
+.secondary-menu .sm-left,
+.secondary-menu .sm-right {
+	line-height: 40px;
+	color: #fff;
+}
+
+.secondary-menu .sm-social-link a {
+	display: inline-block;
+	width: 40px;
+	height: 40px;
+	line-height: 40px;
+	font-size: 14px;
+	color: #fff;
+	text-align: center;
+	background: rgba(0,0,0,0.3);
+}
+
+/* banner */
+
+/* banner slider */
+
+.wrapper{
+	overflow: hidden !important;
+}
+
+.banner .carousel .item{
+  -webkit-animation-duration: 3s;
+  -webkit-animation-delay: 0.5s;
+  -moz-animation-duration: 3s;
+  -moz-animation-delay: 0.5s;
+  -ms-animation-duration: 3s;
+  -ms-animation-delay: 0.5s;
+  -o-animation-duration: 3s;    
+  -o-animation-delay: 0.5s;    
+  animation-duration:3s;
+  animation-delay:0.5s;
+}
+.banner .carousel .carousel-caption h2,
+.banner .carousel .carousel-caption h3 {
+  -webkit-animation-duration: 2s;
+  -webkit-animation-delay: 1s;
+  -moz-animation-duration: 2s;
+  -moz-animation-delay: 1s;
+  -ms-animation-duration: 2s;
+  -ms-animation-delay: 1s;
+  -o-animation-duration: 2s;    
+  -o-animation-delay: 1s;    
+  animation-duration:2s;
+  animation-delay:1s;
+}
+
+.banner .carousel .carousel-caption h2 i {
+	font-size: 64px;
+  display: inline-block;
+  margin-right: 12px;
+}
+
+.banner .carousel .carousel-caption p{
+  -webkit-animation-duration: 2s;
+  -webkit-animation-delay: 1s;
+  -moz-animation-duration: 2s;
+  -moz-animation-delay: 1s;
+  -ms-animation-duration: 2s;
+  -ms-animation-delay: 1s;
+  -o-animation-duration: 2s;    
+	-o-animation-delay: 1s;      
+  animation-duration:2s;
+  animation-delay:1s;
+}
+
+.banner .carousel .carousel-caption .btn{
+  -webkit-animation-duration: 2s;
+  -webkit-animation-delay: 2.5s;
+  -moz-animation-duration: 2s;
+  -moz-animation-delay: 2.5s;
+  -ms-animation-duration: 2s;
+  -ms-animation-delay: 2.5s;
+  -o-animation-duration: 2s;    
+  -o-animation-delay: 2.5s;    
+  animation-duration:2s;
+  animation-delay:2.5s;
+}
+
+.banner .carousel .carousel-control{
+	position: absolute;
+	top: 50%;
+	margin-top: -25px;
+	display: inline-block;
+	font-size: 18px;
+	text-align: center;
+	background: none;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)" !important;
+	border:0;
+	opacity: 1;
+	text-shadow: none;
+}
+
+.banner .carousel .carousel-control span {
+	width: 50px;
+	height: 50px;
+	line-height: 52px;
+	font-size: 22px;
+}
+
+.banner .slide-one, .banner .slide-two {
+	bottom: inherit;
+	top: 250px;
+	text-align: left;
+	height: 50vh !important;
+}
+.banner .slide-one h2, .banner .slide-two h2 {
+	margin-bottom: 15px;
+	font-size: 52px;
+	line-height: 42px;
+	font-weight: 300;
+	color: #fff;
+}
+
+.banner .slide-one h3, .banner .slide-two h3 {
+	font-size: 24px;
+	line-height: 32px;
+	font-weight: 400;
+}
+
+.banner .slide-one .btn,
+.banner .slide-two .btn {
+	display: inline-block;
+	margin-top: 15px;
+	padding: 12px 32px;
+	font-size: 16px;
+}
+
+/*
+ * Responsive CSS 
+ */
+
+@media (max-width: 991px){
+	.banner .slide-one, .banner .slide-two {top: 130px;}
+}
+
+@media (max-width: 1100px){ 
+}
