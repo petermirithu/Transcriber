@@ -1,0 +1,1 @@
+web: gunicorn transcribe.wsgi --log-file -
