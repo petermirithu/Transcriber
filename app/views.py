@@ -1,13 +1,26 @@
 from django.shortcuts import render,redirect
+from django.http import HttpResponseRedirect
+from .forms import UploadFileForm
 import speech_recognition as sr
 from pydub import AudioSegment
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 
 from django.templatetags.static import static
 
 # Create your views here.
 def home(request):
     return render(request,"index.html")
-    
+
+def file_upload(request):
+    if request.method == 'POST' and request.FILES['myfile']:
+        myfile = request.FILES['myfile']
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        uploaded_file_url = fs.url(filename)
+        return render(request, 'index.html', {'uploaded_file_url': uploaded_file_url})
+    return redirect("home")
+
 def converter(request):
 
     file_x="static/audio/newsreel.mp3" 
