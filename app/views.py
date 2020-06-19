@@ -9,6 +9,9 @@ from django.core.files.storage import FileSystemStorage
 import os
 from datetime import datetime
 
+from google.cloud import speech_v1
+from google.cloud.speech_v1 import enums
+import io
 
 # Create your views here.
 def home(request):
@@ -63,8 +66,8 @@ def converter(request,file_name):
             audio_mp3 = ls_mp3.record(source)          
             try:
                 text_mp3=ls_mp3.recognize_google(audio_mp3)                                                    
-            except Exception:
-                messages.info(request, 'Bad News! There was error with you file.')
+            except Exception as e:
+                messages.info(request, e)
                 return redirect("home")                
         
         messages.info(request, 'Successfully did magic for you. Scroll down to see it!')        
@@ -86,8 +89,8 @@ def converter(request,file_name):
             audio_wav = ls_wav.record(source_wav)          
             try:                    
                 text_wav=ls_wav.recognize_google(audio_wav)                    
-            except Exception:
-                messages.info(request, 'Bad News! There was error with you file.')
+            except Exception as e:
+                messages.info(request, e)
                 return redirect("home")                
 
         messages.info(request, 'Successfully did magic for you. Scroll down to see it!')                                    
