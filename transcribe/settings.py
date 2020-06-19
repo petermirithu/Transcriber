@@ -28,6 +28,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config("SECRET_KEY")
+CLIENT_ID=config("CLIENT_ID")
+CLIENT_KEY=config("CLIENT_KEY")
+
 MODE=config("MODE")
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -83,6 +86,7 @@ cloudinary.config(
   api_key = config('API_KEY'),
   api_secret = config('API_SECRET')
 )
+
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases

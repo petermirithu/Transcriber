@@ -11,6 +11,7 @@ import cloudinary
 from getmac import get_mac_address as gma
 from app.models import audio_files
 import requests
+from django.conf import settings
 
 
 
@@ -77,11 +78,14 @@ def converter(request):
         # listening to audio
         ls_mp3=sr.Recognizer()
 
+        client_id=settings.CLIENT_ID
+        client_key=settings.CLIENT_KEY
+
         with sr.AudioFile(sound_mp3) as source:
             ls_mp3.adjust_for_ambient_noise(source)                      
             audio_mp3 = ls_mp3.record(source)          
             try:
-                text_mp3=ls_mp3.recognize_google(audio_mp3)                                                    
+                text_mp3=ls_mp3.recognize_houndify((audio_mp3),client_id,client_key)                                                    
             except Exception as e:
                 messages.info(request, e)
                 return redirect("home")                
