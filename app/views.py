@@ -9,9 +9,6 @@ from django.core.files.storage import FileSystemStorage
 import os
 from datetime import datetime
 
-from google.cloud import speech_v1
-from google.cloud.speech_v1 import enums
-import io
 
 # Create your views here.
 def home(request):
