@@ -22,7 +22,7 @@ def home(request):
 def file_upload(request):
     if request.method=='POST':        
         file_x=request.FILES['myfile']     
-        cloudinary.api.delete_resources([gma()])                                    
+        cloudinary.uploader.destroy(gma())                                    
         file_name=gma()                
         cloudinary.uploader.upload(file_x,resource_type="video",public_id="transcribe_x/"+file_name)        
         messages.info(request, 'Successfully Uploaded you file. Scroll down and hover Transcribe button for magic.')                
