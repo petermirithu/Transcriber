@@ -95,23 +95,24 @@
 	</div>
 
 	<div id="form" class="container-fluid">		
+		<a onclick="openLoader()" href="{% url 'converter' %}" >Generate Text</a>
 		{% if uploaded_file_url %}							
 			<div class="trans_btn">
 				<div class="share-button">
 					<span>Transcribe</span>					
 					<p><i class="fas fa-assistive-listening-systems"></i></p>
-					<a onclick="openLoader()" href="/convert{{uploaded_file_url}}/" >Generate Text</a>
+					<a onclick="openLoader()" href="/convert/" >Generate Text</a>
 					<p<i class="fas fa-pen"></i></p>
 				</div>		
 			</div>
 		{% else %}		
 			<div id="form_u" class="form_u">
-				<form method="post" action="{% url 'file_upload' %}" enctype="multipart/form-data">
-					{% csrf_token %}					
-					<h6>mp3 or wav only</h6>
-					<input style="cursor: pointer;" class="form-control" type="file" name="myfile" required>
+				<form method="POST" action="{% url 'file_upload' %}" enctype="multipart/form-data">					
+					{% csrf_token %}																			 
 					<hr>
-					<button class="btn btn-primary" onclick="openLoader()" type="submit">Upload</button>
+					<div class='form-group'>						
+						<input type="submit" onclick="openLoader()" class="btn btn-primary" value="Upload">
+					</div>
 				</form>
 			</div>				
 

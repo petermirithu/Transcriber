@@ -5,6 +5,7 @@ beautifulsoup4==4.9.1
 bootstrap4==0.1.0
 certifi==2020.4.5.2
 chardet==3.0.4
+cloudinary==1.21.1
 dj-database-url==0.5.0
 Django==3.0.7
 django-bootstrap4==2.1.1
@@ -12,6 +13,7 @@ django-ffmpeg==0.0.16
 django-heroku==0.3.1
 ffprobe-python==1.0.3
 Fleepy==0.2.1
+get-mac==0.8.2
 gunicorn==20.0.4
 idna==2.9
 importlib-metadata==1.6.1

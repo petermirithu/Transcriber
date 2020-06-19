@@ -7,41 +7,60 @@ from django.contrib import messages
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 import os
-from datetime import datetime
+import cloudinary
+from getmac import get_mac_address as gma
+from app.models import audio_files
+import requests
+
 
 
 # Create your views here.
 def home(request):
-    path ="media"    
-    now=datetime.now()
+    user_uploads=audio_files.get_user_uploads(gma())
+    if user_uploads:
+        for fl in user_uploads:
+            cloudinary.api.delete_resources([fl.file_au])
 
-    for filename in os.listdir(path):        
-        t = os.path.getmtime("media/"+filename)
-        dt=datetime.fromtimestamp(t)
-        res=(dt-now).days            
-        if res<0:
-            os.remove("media/"+filename)
-            print("done")                    
-        
-    return render(request,"index.html")
+    return render(request,"index.html",{"form":UploadFileForm()})
 
 def file_upload(request):
-    if request.method == 'POST' and request.FILES['myfile']:                
-        myfile = request.FILES['myfile']
-        fs = FileSystemStorage()
-        filename = fs.save(myfile.name, myfile)
-        uploaded_file_url = fs.url(filename)     
-        final_name=uploaded_file_url[6:]
+    if request.method=='POST':
+        form=UploadFileForm(request.POST)
+        if form.is_valid():
+            form_x=form.save(commit=False)
+            form_x.user_mac=gma()
+            form_x.save()          
+            print("*************************")              
+            print("good")            
+            print("*************************")              
+            messages.info(request, 'Successfully Uploaded you file. Scroll down and hover Transcribe button for magic.')        
+            return redirect('home',uploaded_file_url="yes" )             
 
-        messages.info(request, 'Successfully Uploaded you file. Scroll down and hover Transcribe button for magic.')        
-        return render(request, 'index.html', {'uploaded_file_url': final_name})
+        else:
+            print("*************************")              
+            print("not audio file")            
+            print("*************************")              
+            return redirect("home")
 
+    print("*************************")              
+    print("bad")            
+    print("*************************")              
     return redirect("home")
 
-def converter(request,file_name):
-    file_path="media/"+file_name
-    # check file        
-    str_url = str(file_path)
+def converter(request):
+    # file_path="media/"+file_name
+    url_file="https://res.cloudinary.com/pyra-z/video/upload/v1592577254/newsreel_enmxls.mp3"
+    path_file="./speech.mp3"
+
+    response = requests.get(url_file)     # get the response of the url
+    with open(path_file, 'wb') as file:   # create the file
+        file.write(response.content) # write response contents to the fil
+
+    # user_uploads=audio_files.get_user_uploads(gma())
+    # cloudinary.api.delete_resources(["image1", "image2"])
+    # check file          
+      
+    str_url = str(path_file)
     exte_str=str_url[-3]+str_url[-2]+str_url[-1]
 
     if "%" in str_url:
@@ -68,7 +87,7 @@ def converter(request,file_name):
                 return redirect("home")                
         
         messages.info(request, 'Successfully did magic for you. Scroll down to see it!')        
-        return render( request, 'index.html',{"text":text_mp3})
+        return render(request,'index.html',{"text":text_mp3})           
 
     elif exte_str=="wav":
         file_wav=str_url
@@ -91,7 +110,7 @@ def converter(request,file_name):
                 return redirect("home")                
 
         messages.info(request, 'Successfully did magic for you. Scroll down to see it!')                                    
-        return render( request, 'index.html',{"text":text_wav})
+        return redirect('home',text=text_wav )             
         
     else:            
         messages.info(request, 'Bad News! We only accept audio files!.')

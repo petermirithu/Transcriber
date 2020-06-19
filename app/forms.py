@@ -1,5 +1,7 @@
 from django import forms
+from app.models import audio_files
 
-class UploadFileForm(forms.Form):
-    title = forms.CharField(max_length=50)
-    file = forms.FileField()
+class UploadFileForm(forms.ModelForm):    
+    class Meta:
+        model=audio_files
+        fields=['file_au']

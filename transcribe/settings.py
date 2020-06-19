@@ -11,8 +11,13 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import dj_database_url
 import django_heroku
 from decouple import config,Csv
+
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -27,7 +32,6 @@ MODE=config("MODE")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG=config("DEBUG",default=False,cast=bool)
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -74,21 +78,35 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'transcribe.wsgi.application'
 
+cloudinary.config( 
+  cloud_name = config('CLOUD_NAME'), 
+  api_key = config('API_KEY'),
+  api_secret = config('API_SECRET')
+)
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-if config("MODE")=="dev":
+if config('MODE')=='dev':    
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': config('DB_NAME'),
+            'USER': config('DB_USER'),
+            'PASSWORD': config('DB_PASSWORD'),
+            'HOST': config('DB_HOST'),
+            'PORT': '',
         }
     }
 else:
-    ALLOWED_HOSTS=config('ALLOWED_HOSTS',cast=Csv())        
-
-
+    DATABASES={
+        'default':dj_database_url.config(
+            default=config('DATABASE_URL')            
+        )
+    }   
+    db_from_env=dj_database_url.config(conn_max_age=500)
+    DATABASES['default'].update(db_from_env)
+    ALLOWED_HOSTS=config('ALLOWED_HOSTS',cast=Csv())
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -132,7 +150,4 @@ STATIC_ROOT=os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS=[
     os.path.join(BASE_DIR, 'static')    
 ]
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 django_heroku.settings(locals())
