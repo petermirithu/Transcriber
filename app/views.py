@@ -63,7 +63,7 @@ def converter(request,file_name):
             audio_mp3 = ls_mp3.record(source)          
             try:
                 text_mp3=ls_mp3.recognize_google(audio_mp3)                                                    
-            except LookupError:
+            except Exception:
                 messages.info(request, 'Bad News! There was error with you file.')
                 return redirect("home")                
         
@@ -86,7 +86,7 @@ def converter(request,file_name):
             audio_wav = ls_wav.record(source_wav)          
             try:                    
                 text_wav=ls_wav.recognize_google(audio_wav)                    
-            except LookupError:
+            except Exception:
                 messages.info(request, 'Bad News! There was error with you file.')
                 return redirect("home")                
 
