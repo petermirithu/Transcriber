@@ -60,7 +60,7 @@
 								<!-- paragraph -->
 								<h3 class="animated fadeInRightBig">Just upload your audio file & get text out of it.</h3>
 								<!-- button -->
-								<a href="#form" class="animated fadeIn btn btn-danger">Upload file</a>
+								<a href="#form" onclick="styleform()" class="animated fadeIn btn btn-danger">Upload file</a>
 							</div>
 						</div>
 					</div>
@@ -74,7 +74,7 @@
 								<!-- paragraph -->
 								<h3 class="animated fadeInRightBig">All you need is an audio file, Simple!.</h3>
 								<!-- button -->
-								<a href="#form" class="animated fadeIn btn btn-danger">Upload Now</a>
+								<a href="#form" onclick="styleform()" class="animated fadeIn btn btn-danger">Upload Now</a>
 							</div>
 						</div>
 					</div>
@@ -105,12 +105,13 @@
 				</div>		
 			</div>
 		{% else %}		
-			<div class="form_u">
+			<div id="form_u" class="form_u">
 				<form method="post" action="{% url 'file_upload' %}" enctype="multipart/form-data">
-					{% csrf_token %}
+					{% csrf_token %}					
+					<h6>mp3 or wav only</h6>
 					<input style="cursor: pointer;" class="form-control" type="file" name="myfile" required>
 					<hr>
-					<button class="btn btn-primary" type="submit">Upload</button>
+					<button class="btn btn-primary" onclick="openLoader()" type="submit">Upload</button>
 				</form>
 			</div>				
 

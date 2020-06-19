@@ -6,14 +6,27 @@ from pydub import AudioSegment
 from django.contrib import messages
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+import os
+from datetime import datetime
 
 
 # Create your views here.
 def home(request):
+    path ="media"    
+    now=datetime.now()
+
+    for filename in os.listdir(path):        
+        t = os.path.getmtime("media/"+filename)
+        dt=datetime.fromtimestamp(t)
+        res=(dt-now).days            
+        if res<0:
+            os.remove("media/"+filename)
+            print("done")                    
+        
     return render(request,"index.html")
 
 def file_upload(request):
-    if request.method == 'POST' and request.FILES['myfile']:
+    if request.method == 'POST' and request.FILES['myfile']:                
         myfile = request.FILES['myfile']
         fs = FileSystemStorage()
         filename = fs.save(myfile.name, myfile)
@@ -49,9 +62,8 @@ def converter(request,file_name):
             ls_mp3.adjust_for_ambient_noise(source)                      
             audio_mp3 = ls_mp3.record(source)          
             try:
-                text_mp3=ls_mp3.recognize_google(audio_mp3)                    
-
-            except Exception:
+                text_mp3=ls_mp3.recognize_google(audio_mp3)                                                    
+            except LookupError:
                 messages.info(request, 'Bad News! There was error with you file.')
                 return redirect("home")                
         
@@ -74,7 +86,7 @@ def converter(request,file_name):
             audio_wav = ls_wav.record(source_wav)          
             try:                    
                 text_wav=ls_wav.recognize_google(audio_wav)                    
-            except Exception:
+            except LookupError:
                 messages.info(request, 'Bad News! There was error with you file.')
                 return redirect("home")                
 
